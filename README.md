@@ -2,6 +2,8 @@
 
 This project provides a **C# Inference Engine (DLL)** to execute **60 individual ONNX models** trained in Python for high-precision body dimension prediction.
 
+This project currently supports three specific models: ElasticNet, Weighted Ridge, and XGBoost. This limitation is due to the technical challenge of manually aligning feature lists, as these models do not include built-in feature selection mechanisms.
+
 ---
 
 ## Project Structure
@@ -9,8 +11,14 @@ This project provides a **C# Inference Engine (DLL)** to execute **60 individual
 | Component | Description |
 | :--- | :--- |
 | **ClassLibrary1.dll** | Core library containing the inference logic (ModelRunner). |
-| **Python_Models/** | Directory containing ONNX model files. (Structure: [Gender]/[Model_Type]/pc1~pc60.onnx) |
+| **Python_Models/** | Directory containing ONNX model files. (Must follow the specific structure below) |
 | **Feature_List.txt** | A reference file defining the required order of input features (Principal Components). |
+
+### Detailed Folder Structure for Models
+For the engine to function correctly, the `Python_Models` folder must be organized as follows:
+- **`Python_Models/Male/[Model_Name]/`**: Contains `pc1.onnx` through `pc60.onnx` for males.
+- **`Python_Models/Female/[Model_Name]/`**: Contains `pc1.onnx` through `pc60.onnx` for females.
+*(Note: [Model_Name] refers to categories like 'Elastic' or 'XGB')*
 
 ---
 
@@ -34,8 +42,8 @@ The following example demonstrates how to initialize the engine and process mult
 using AnthroInference; // Namespace defined in your DLL
 
 // 1. Initialize Engine
-// Specify Gender ("Male" or "Female") and Model Type ("Anthro" or "PCA")
-ModelRunner runner = new ModelRunner("Male", "Anthro");
+// Specify Gender ("Male" or "Female") and Model Type ("Elastic" or "Weighted_Ridge" or "XGB")
+ModelRunner runner = new ModelRunner("Male", "Elastic");
 
 // 2. Prepare Input Data (PC values: PC1, PC2, PC3...)
 // NOTE: Input values must strictly follow the order defined in Feature_List.txt
