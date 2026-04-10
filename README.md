@@ -13,7 +13,7 @@ This project provides a **C# Inference Engine (DLL)** to execute **60 individual
 | **Feature_List.json** | Defines the required order of **62 input features** (60 PCs + Stature + Weight). |
 
 ### Supported Models
-Currently, this project supports: **ElasticNet, Weighted Ridge, and XGBoost**.
+"This project currently supports three specific models: ElasticNet, Weighted Ridge, and XGBoost. This limitation is due to the technical challenge of manually aligning feature lists, as these models do not include built-in feature selection mechanisms."
 
 ---
 
