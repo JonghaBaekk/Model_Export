@@ -2,8 +2,7 @@
 .vs/
 
 # Build files
-bin/
-obj/
+\obj/
 
 # NuGet packages
 packages/
