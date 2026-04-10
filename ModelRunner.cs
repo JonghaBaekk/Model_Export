@@ -9,18 +9,19 @@ namespace AnthroInference
 {
     public class ModelRunner
     {
-        // 60개의 세션을 담을 리스트
+        // List that will contain 60 sessions
         private List<InferenceSession> _sessions = new List<InferenceSession>();
 
         public ModelRunner(string gender, string modelType, string modelRootPath = "Python_Models")
         {
-            // 예: Python_Models/Male/Anthro/
+            // Example: Python_Models/Male/Model_Name/
             string folderPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, modelRootPath, gender, modelType);
 
             if (!Directory.Exists(folderPath))
-                throw new DirectoryNotFoundException($"폴더를 찾을 수 없습니다: {folderPath}");
+                throw new DirectoryNotFoundException($"Cannot find Folder: {folderPath}");
 
-            // pc1.onnx부터 pc60.onnx까지 순서대로 불러오기
+            //  Load pc1.onnx to pc60.onnx with keeping order
+
             for (int i = 1; i <= 60; i++)
             {
                 string filePath = Path.Combine(folderPath, $"pc{i}.onnx");
@@ -31,7 +32,7 @@ namespace AnthroInference
             }
         }
 
-        // 60개 모델을 모두 돌려 60개의 결과값을 모으는 함수
+        // run all 60 models and save 60 results from each model
         public float[] PredictAll(float[] inputData)
         {
             float[] finalResults = new float[_sessions.Count];
@@ -44,12 +45,12 @@ namespace AnthroInference
 
                 using (var results = _sessions[i].Run(container))
                 {
-                    // 각 모델은 결과값 1개를 내뱉음
+                    // Each model has one result (e.g pc1,onnx -> predicted pc1)
                     finalResults[i] = results.First().AsEnumerable<float>().First();
                 }
             }
 
-            return finalResults; // 최종적으로 60개의 예측값이 담긴 배열 반환
+            return finalResults; // Return arry of 60 pc prediction (number of pcs can vary based on input)
         }
     }
 }
